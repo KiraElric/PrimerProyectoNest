@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { TasksService } from './tasks.service';
+import { CreateTaskDto } from './dto/task.dto';
 
 //Anotación o decorador que permite definir la ruta de ingreso hasta este controlador, la cual seria localhost:3000/tasks
 @Controller('tasks')
@@ -16,4 +17,9 @@ export class TasksController {
         return this.taskService.getAllTask();
     }
 
+    @Post("new")
+    //Request body que se envia los datos hacia el servidor, este debe ser guardado en un valor
+    createTask(@Body() newTask: CreateTaskDto){
+        return this.taskService.createTask(newTask.title, newTask.description);
+    }
 }
