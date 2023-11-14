@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Patch } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { CreateTaskDto } from './dto/task.dto';
+import { CreateTaskDto, UpdateTaskDto } from './dto/task.dto';
 
 //Anotación o decorador que permite definir la ruta de ingreso hasta este controlador, la cual seria localhost:3000/tasks
 @Controller('tasks')
@@ -21,5 +21,17 @@ export class TasksController {
     //Request body que se envia los datos hacia el servidor, este debe ser guardado en un valor
     createTask(@Body() newTask: CreateTaskDto){
         return this.taskService.createTask(newTask.title, newTask.description);
+    }
+
+    //De esta forma puedo indicar que el id sera un parametro por URL 
+    @Delete(':id')
+    //Anotacion que permite obtener el parametro deseado de la URL por su nombre
+    deleteTask(@Param('id') id: string){
+        return this.taskService.deleteTask(id)
+    }
+
+    @Patch(":id")
+    updateTask(@Param("id") id: string, @Body() updatedFiles : UpdateTaskDto){
+        this.taskService.updateTask(id, updatedFiles)
     }
 }
